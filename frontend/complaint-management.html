@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Complaint Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+
+<script src="script.js" defer></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container nav-container">
+
+<div class="nav-logo">
+<a href="admin-dashboard.html">
+<i class="fa-solid fa-user-shield"></i>
+Admin Portal
+</a>
+</div>
+
+<ul class="nav-links">
+
+<li>
+<a href="admin-dashboard.html">
+Dashboard
+</a>
+</li>
+
+<li>
+<a href="complaint-management.html"
+class="active">
+Complaints
+</a>
+</li>
+
+<li>
+<button onclick="logout()"
+class="btn btn-danger">
+Logout
+</button>
+</li>
+
+</ul>
+
+</div>
+
+</nav>
+
+<main class="container dashboard-sec">
+
+<h2 class="section-title"
+style="text-align:left;margin-bottom:2rem;">
+Complaint Management
+</h2>
+
+<div class="filter-bar">
+
+<div class="form-group">
+
+<label>
+Search Complaint
+</label>
+
+<input
+type="text"
+id="complaintSearch"
+placeholder="Complaint ID">
+
+</div>
+
+<div class="form-group">
+
+<label>
+Status
+</label>
+
+<select id="statusFilter">
+
+<option>All</option>
+<option>Pending</option>
+<option>In Progress</option>
+<option>Resolved</option>
+<option>Rejected</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="table-responsive">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Complaint ID</th>
+
+<th>Citizen</th>
+
+<th>Department</th>
+
+<th>Subject</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="adminComplaintTable">
+
+<tr>
+
+<td>CP1001</td>
+
+<td>Rahul Sharma</td>
+
+<td>Electricity</td>
+
+<td>Power Failure</td>
+
+<td>
+<span class="status-badge pending">
+High
+</span>
+</td>
+
+<td>
+<span class="status-badge pending">
+Pending
+</span>
+</td>
+
+<td>
+
+<button class="btn btn-primary">
+
+View
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</main>
+
+</body>
+</html>

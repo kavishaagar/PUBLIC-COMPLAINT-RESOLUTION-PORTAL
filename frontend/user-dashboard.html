@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Citizen Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="nav-logo">
+                <a href="user-dashboard.html"><i class="fa-solid fa-scale-balanced"></i> E-Governance PORTAL</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="user-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="complaint-history.html">My History</a></li>
+                <li><a href="track-complaint.html">Live Track</a></li>
+                <li><button onclick="logout()" class="btn btn-danger">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container dashboard-sec">
+        <div class="welcome-bar">
+            <h2>Welcome Back, <span id="userName">Citizen</span></h2>
+            <span class="status-badge resolved" style="font-size:0.9rem;">Account Verified</span>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <h3>Total Complaints</h3>
+                <p id="totalCount">0</p>
+            </div>
+            <div class="stat-card pending">
+                <h3>Pending Complaints</h3>
+                <p id="pendingCount">0</p>
+            </div>
+            <div class="stat-card resolved">
+                <h3>Resolved Complaints</h3>
+                <p id="resolvedCount">0</p>
+            </div>
+        </div>
+
+        <div class="actions-panel">
+            <h3>Quick Actions</h3>
+            <div class="flex-group">
+                <a href="complaint-form.html" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i> File New Complaints </a>
+                <a href="complaint-history.html" class="btn btn-outline" style="color:var(--primary); border-color:var(--primary);"><i class="fa-solid fa-clock-rotate-left"></i>  View History</a>
+                <a href="track-complaint.html" class="btn btn-accent"><i class="fa-solid fa-location-crosshairs"></i> Track Status</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

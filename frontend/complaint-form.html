@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Complaint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><i class="fa-solid fa-scale-balanced"></i> E-Governance PORTAL</a>
+            </div> 
+            <ul class="nav-links">
+                <li><a href="user-dashboard.html">Back to Dashboard</a></li>
+                <li><button onclick="logout()" class="btn btn-danger">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="form-section">
+        <div class="form-card form-card-wide">
+            <h2>File a New Complaint</h2>
+            <div id="formAlert" class="alert"></div>
+            <form id="complaintForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Auto Generated Token ID</label>
+                        <input type="text" id="complaintId" readonly style="font-weight:700; color:var(--secondary);">
+                    </div>
+            <div class="form-group">
+                <label for="category">Select Department / Issue Category</label>
+<select id="category" required>
+    <option value="" disabled selected>Choose the department</option>
+    
+    <option value="Water Supply">Water Supply & Drainage</option>
+    <option value="Electricity">Electricity & Power</option>
+    <option value="Roads & Highways">Roads, Potholes & Streetlights</option>
+    <option value="Sanitation">Garbage & Public Cleanliness</option>
+    
+    <option value="Railways">Indian Railways Services</option>
+    <option value="Banking">Banking & Financial Fraud</option>
+    
+    <option value="Health">Public Health & Hospitals</option>
+    <option value="Education">Government Schools & Scholarships</option>
+    <option value="Ration">Ration Card & Food Supply (PDS)</option>
+    <option value="others">Others</option>
+
+</select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" placeholder=" Issue headline" >
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="4" placeholder="Provide clear details about the issue...." required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="Specific Landmark" required>
+                    </div>
+                    <div class="form-group">
+    <label for="evidence">
+        Upload Evidence <span class="optional-text">(Optional)</span>
+    </label>
+    <input type="file" id="evidence" accept="image/*,application/pdf">
+    <small class="form-hint">Max file size: 5MB.</small>
+</div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Submit</button>
+            </form>
+        </div>
+    </section>
+
+</body>
+</html>

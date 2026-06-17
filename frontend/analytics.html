@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Analytics Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+
+<script src="script.js" defer></script>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="container nav-container">
+
+<div class="nav-logo">
+<a href="admin-dashboard.html">
+<i class="fa-solid fa-chart-line"></i>
+Analytics
+</a>
+</div>
+
+<ul class="nav-links">
+<li><a href="admin-dashboard.html">Dashboard</a></li>
+<li><a href="analytics.html" class="active">Analytics</a></li>
+<li>
+<button onclick="logout()" class="btn btn-danger">
+Logout
+</button>
+</li>
+</ul>
+
+</div>
+</nav>
+
+<main class="container dashboard-sec">
+
+<div class="welcome-bar">
+
+<div>
+<h2>Portal Analytics</h2>
+<p style="color:#64748b;margin-top:6px;">
+Real-time complaint and user statistics.
+</p>
+</div>
+
+<span class="status-badge resolved">
+Live Data
+</span>
+
+</div>
+
+<!-- TOP STATS -->
+
+<div class="stats-grid">
+
+<div class="stat-card total">
+<h3>Total Complaints</h3>
+<p id="anaTotal">0</p>
+</div>
+
+<div class="stat-card pending">
+<h3>Pending</h3>
+<p id="anaPending">0</p>
+</div>
+
+<div class="stat-card resolved">
+<h3>Resolved</h3>
+<p id="anaResolved">0</p>
+</div>
+
+<div class="stat-card total">
+<h3>Total Users</h3>
+<p id="anaUsers">0</p>
+</div>
+
+</div>
+
+<!-- DEPARTMENT STATS -->
+
+<div class="actions-panel">
+
+<h3>Department Wise Complaints</h3>
+
+<div class="table-responsive">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Department</th>
+<th>Total Complaints</th>
+</tr>
+
+</thead>
+
+<tbody id="departmentTableBody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- RESOLUTION RATE -->
+
+<div class="actions-panel" style="margin-top:2rem;">
+
+<h3>Resolution Rate</h3>
+
+<div style="padding:20px;text-align:center;">
+
+<h1 id="resolutionRate"
+style="font-size:3rem;color:#16a34a;">
+0%
+</h1>
+
+<p>
+Resolved Complaints Percentage
+</p>
+
+</div>
+
+</div>
+
+<!-- RECENT COMPLAINTS -->
+
+<div class="actions-panel" style="margin-top:2rem;">
+
+<h3>Recent Complaints</h3>
+
+<div class="table-responsive">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>User</th>
+<th>Department</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="recentComplaintsBody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</main>
+
+</body>
+</html>

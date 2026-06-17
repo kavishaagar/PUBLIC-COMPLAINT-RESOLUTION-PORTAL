@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Public Complaint Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            margin: 0;
+        }
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar Styling matching your theme */
+        .admin-sidebar {
+            width: 260px;
+            background: #00152e;
+            color: #ffffff;
+            padding: 2rem 1.5rem;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+        }
+        .sidebar-brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #ffd700;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar-menu li {
+            margin-bottom: 0.75rem;
+        }
+        .sidebar-menu a {
+            color: #e2e8f0;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+        }
+        /* Main Panel */
+        .admin-main {
+            flex: 1;
+            padding: 3rem;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 1.5rem;
+        }
+        .admin-header h1 {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+        }
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .stat-card {
+            background: #ffffff;
+            padding: 1.75rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: #00509e;
+        }
+        .stat-card.pending::before { background: #ffd700; }
+        .stat-card.resolved::before { background: #10b981; }
+        .stat-card h3 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            margin: 0 0 0.5rem 0;
+        }
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+        /* Complaint Table Container */
+        .complaint-section {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+        .complaint-section h2 {
+            font-size: 1.4rem;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+        }
+        /* Status Badges */
+        .badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge.pending { background: rgba(255, 215, 0, 0.15); color: #b45309; }
+        .badge.resolved { background: rgba(16, 185, 129, 0.15); color: #065f46; }
+        /* Action Buttons */
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        .btn-resolve { background: #10b981; color: white; }
+        .btn-resolve:hover { background: #059669; }
+        
+        @media (max-width: 768px) {
+            .admin-container { flex-direction: column; }
+            .admin-sidebar { width: 100%; padding: 1.5rem; }
+            .admin-main { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-scale-balanced"></i> Admin Panel
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i class="fa-solid fa-chart-pie"></i> Overview</a></li>
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Public Portal</a></li>
+                <li><a href="#" id="adminLogout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>Grievance Management System</h1>
+                <span style="font-weight: 600; color: #00509e;"><i class="fa-solid fa-user-shield"></i> Control Hub</span>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Complaints</h3>
+                    <p class="number" id="countTotal">0</p>
+                </div>
+                <div class="stat-card pending">
+                    <h3>Pending Action</h3>
+                    <p class="number" id="countPending">0</p>
+                </div>
+                <div class="stat-card resolved">
+                    <h3>Resolved Cases</h3>
+                    <p class="number" id="countResolved">0</p>
+                </div>
+            </div>
+
+            <section class="complaint-section">
+                <h2>Live Public Complaints</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Complaint ID</th>
+                                <th>Citizen Name</th>
+                                <th>Category/Issue</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaintTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #64748b;">Connecting to database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Track Complaint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+<div class="nav-logo">
+                <a href="index.html"><i class="fa-solid fa-scale-balanced"></i> E-Governance PORTAL</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="track-complaint.html" class="active">Track Complaint</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container" style="padding:4rem 0; flex:1;">
+        <div class="form-card" style="margin: 0 auto; max-width:650px;">
+            <h2 style="margin-bottom:1rem;">Track Your Complaint</h2>
+            <div class="form-group">
+                <label for="trackId">Enter Complaint ID</label>
+                <div style="display:flex; gap:0.5rem;">
+                    <input type="text" id="trackId" placeholder="e.g. CP-8724" style="flex:1;">
+                    <button id="searchBtn" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+
+            <div class="track-wrapper" id="trackResult">
+                <div class="track-header">
+                    <h3>Complaint Details <span id="resId"></span></h3>
+                    <span id="resStatus"></span>
+                </div>
+                <div class="track-grid">
+                    <div class="track-item">
+                        <h4>Department</h4>
+                        <p id="resCategory"></p>
+                    </div>
+                    <div class="track-item">
+                        <h4>Subject</h4>
+                        <p id="resSubject"></p>
+                    </div>
+                    <div class="track-item">
+                        <h4>Complaint Date</h4>
+                        <p id="resDate"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

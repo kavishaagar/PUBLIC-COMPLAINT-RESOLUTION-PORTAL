@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Management</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="container nav-container">
+
+            <div class="nav-logo">
+                <a href="admin-dashboard.html">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Admin Portal
+                </a>
+            </div>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="admin-dashboard.html">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="complaint-management.html">
+                        Complaints
+                    </a>
+                </li>
+
+                <li>
+                    <a href="user-management.html"
+                    class="active">
+                        Users
+                    </a>
+                </li>
+
+                <li>
+                    <button
+                    onclick="logout()"
+                    class="btn btn-danger">
+                        Logout
+                    </button>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <!-- PAGE CONTENT -->
+
+    <main class="container dashboard-sec">
+
+        <div class="welcome-bar">
+
+            <div>
+
+                <h2>User Management</h2>
+
+                <p style="color:#64748b; margin-top:5px;">
+                    View and manage all registered citizens.
+                </p>
+
+            </div>
+
+            <span class="status-badge resolved">
+                Active Users
+            </span>
+
+        </div>
+
+        <!-- USER STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card total">
+                <h3>Total Users</h3>
+                <p id="totalUsers">0</p>
+            </div>
+
+            <div class="stat-card resolved">
+                <h3>Verified Users</h3>
+                <p id="verifiedUsers">0</p>
+            </div>
+
+            <div class="stat-card pending">
+                <h3>Pending Verification</h3>
+                <p id="pendingUsers">0</p>
+            </div>
+
+        </div>
+
+        <!-- SEARCH -->
+
+        <div class="filter-bar">
+
+            <div class="form-group">
+                <label>Search User</label>
+                <input
+                type="text"
+                id="userSearch"
+                placeholder="Name or Email">
+            </div>
+
+        </div>
+
+        <!-- USERS TABLE -->
+
+        <div class="table-responsive">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="userTableBody">
+
+                    <tr>
+
+                        <td>USR001</td>
+                        <td>Rahul Sharma</td>
+                        <td>rahul@gmail.com</td>
+                        <td>9876543210</td>
+
+                        <td>
+
+                            <span class="status-badge resolved">
+                                Active
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-primary">
+
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+
+            <div class="nav-logo">
+                <a href="index.html">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    E-Governance PORTAL
+                </a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li>
+                    <a href="register.html" class="btn btn-accent">
+                        Register
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <section class="form-section">
+
+        <div class="form-card">
+
+            <h2>LOGIN</h2>
+
+            <div id="loginAlert" class="alert"></div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="loginRole">Login As</label>
+
+                    <select id="loginRole" required>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginEmail">
+                        Registered Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email address"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+
+                    <label for="loginPass">
+                        Password
+                    </label>
+
+                    <div class="pass-container">
+
+                        <input
+                            type="password"
+                            id="loginPass"
+                            placeholder="••••••••"
+                            required
+                        >
+
+                        <i
+                            class="fa-solid fa-eye toggle-password"
+                            id="togglePass">
+                        </i>
+
+                    </div>
+                </div>
+
+                <div class="form-utils">
+
+                    <label>
+                        <input type="checkbox">
+                        Remember Password
+                    </label>
+
+                    <a href="forgot-password.html">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width:100%;">
+                    Login
+                </button>
+
+            </form>
+
+            <!-- ADMIN INFO PANEL
+
+            <div style="
+                margin-top:1.5rem;
+                padding:1rem;
+                background:#f8f9fa;
+                border-radius:8px;
+                border-left:4px solid #003366;
+            ">
+
+                <h4 style="
+                    margin-bottom:10px;
+                    color:#003366;
+                "> -->
+                    <!-- <i class="fa-solid fa-user-shield"></i>
+                    Admin Access
+                </h4>
+
+                <p style="
+                    font-size:0.9rem;
+                    margin-bottom:10px;
+                "> -->
+                    <!-- Only authorized administrators can access
+                    the Admin Dashboard.
+                </p>
+
+                <p style="font-size:0.9rem;">
+                    <strong>Email:</strong>
+                    <code style="
+                        background:#eee;
+                        padding:3px 6px;
+                        border-radius:4px;
+                    ">
+                        admin@ccgs.gov.in
+                    </code>
+                </p>
+
+                <p style="font-size:0.9rem;">
+                    <strong>Password:</strong>
+                    <code style="
+                        background:#eee;
+                        padding:3px 6px;
+                        border-radius:4px;
+                    ">
+                        admin2026
+                    </code>
+                </p>
+
+            </div> -->
+
+        </div>
+
+    </section>
+
+</body>
+</html>

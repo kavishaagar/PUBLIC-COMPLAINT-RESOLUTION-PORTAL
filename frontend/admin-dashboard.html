@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="container nav-container">
+
+            <div class="nav-logo">
+                <a href="admin-dashboard.html">
+                    <i class="fa-solid fa-user-shield"></i>
+                    Admin Portal
+                </a>
+            </div>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="admin-dashboard.html" class="active">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#complaintsTable">
+                        Complaints
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Analytics
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Users
+                    </a>
+                </li>
+
+                <li>
+                    <button onclick="logout()"
+                    class="btn btn-danger">
+                        Logout
+                    </button>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <!-- MAIN -->
+
+    <main class="container dashboard-sec">
+
+        <!-- WELCOME BAR -->
+
+        <div class="welcome-bar">
+
+            <div>
+
+                <h2>
+                    Administrator Dashboard
+                </h2>
+
+                <p style="color:#64748b; margin-top:6px;">
+
+                    Monitor complaints, update status,
+                    and manage grievance resolution.
+
+                </p>
+
+            </div>
+
+            <span class="status-badge resolved">
+
+                System Active
+
+            </span>
+
+        </div>
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card total">
+
+                <h3>Total Complaints</h3>
+
+                <p id="admTotal">0</p>
+
+            </div>
+
+            <div class="stat-card pending">
+
+                <h3>Pending</h3>
+
+                <p id="admPending">0</p>
+
+            </div>
+
+            <div class="stat-card resolved">
+
+                <h3>Resolved</h3>
+
+                <p id="admResolved">0</p>
+
+            </div>
+
+            <div class="stat-card total">
+
+                <h3>Registered Users</h3>
+
+                <p id="admUsersCount">0</p>
+
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="actions-panel">
+
+            <h3>Administrative Actions</h3>
+
+            <div class="flex-group">
+
+                <a href="complaint-management.html" class="btn btn-primary">
+
+                <i class="fa-solid fa-list-check"></i>
+
+                Manage Complaints
+
+                </a>
+
+                <a href="analytics.html" class="btn btn-accent">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                 Analytics
+
+                </a>
+
+                <a href="user-management.html" class="btn btn-primary">
+
+                    <i class="fa-solid fa-users"></i>
+
+                     Manage Users
+
+                </a>
+
+                <a href="settings.html" class="btn btn-primary">
+
+                <i class="fa-solid fa-gear"></i>
+
+                 Settings
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- COMPLAINT TABLE -->
+
+        <div
+        class="table-responsive"
+        id="complaintsTable"
+        style="margin-top:2rem;">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Complaint ID</th>
+
+                        <th>User Email</th>
+
+                        <th>Department</th>
+
+                        <th>Subject</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="adminTableBody">
+
+                    <!-- JS WILL FILL THIS -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

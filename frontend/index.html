@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Complaint Resolution Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* Perfectly Balanced Typography Baseline */
+        body {
+            font-size: 1.05rem; /* Clean, standard but highly legible size */
+            line-height: 1.65;
+            color: #334155;
+            background-color: #f8fafc;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .section-title {
+            font-size: 2.2rem; /* Tamed down from giant sizes */
+            font-weight: 800;
+            text-align: center;
+            color: #0f172a;
+            margin-bottom: 3.5rem;
+            letter-spacing: -0.5px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #00509e, #ffd700);
+            border-radius: 10px;
+        }
+
+        /* Top Bar / Status Ticker - Clean and Sharp */
+        .status-ticker {
+            background: #ffd700;
+            color: #002146;
+            padding: 0.85rem 0; /* Elegant padding */
+            font-weight: 700;
+            font-size: 0.95rem; /* Not hitting the eyes anymore */
+            letter-spacing: 0.2px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .ticker-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .ticker-item i { 
+            margin-right: 0.5rem; 
+            font-size: 1.1rem;
+        }
+
+        /* Hero Section - Clean, Premium, Professional Scale */
+        .hero {
+            background: linear-gradient(135deg, #00152e 0%, #003366 100%);
+            padding: 6.5rem 0 7.5rem; /* Standard dashboard padding */
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(255, 215, 0, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: 3.2rem; /* Professional premium bold header */
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 1.25rem;
+            color: #ffffff;
+        }
+        .hero p {
+            font-size: 1.2rem; /* Clean readable supporting copy */
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: #e2e8f0;
+            line-height: 1.65;
+            font-weight: 400;
+        }
+        
+        /* How It Works Section - Interactive Stepper */
+        .how-it-works {
+            padding: 6rem 0;
+            background-color: #ffffff;
+        }
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 3rem;
+            margin-top: 4.5rem;
+            position: relative;
+        }
+        @media (min-width: 992px) {
+            .process-grid::before {
+                content: '';
+                position: absolute;
+                top: 30px;
+                left: 15%;
+                right: 15%;
+                height: 2px;
+                background: #e2e8f0;
+                z-index: 1;
+            }
+        }
+        .process-step {
+            text-align: center;
+            position: relative;
+            padding: 2.2rem 1.75rem;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+        .process-step:hover {
+            transform: translateY(-5px);
+            background: #ffffff;
+            border-color: #00509e;
+            box-shadow: 0 15px 30px rgba(0, 80, 158, 0.06);
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #00509e;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: -4.5rem auto 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 80, 158, 0.2);
+            border: 4px solid #ffffff;
+            transition: all 0.3s ease;
+        }
+        .process-step:hover .step-number {
+            transform: scale(1.05);
+            background: #002146;
+        }
+        .process-step h3 {
+            color: #002146;
+            margin-bottom: 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+        .process-step p {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Key Features - Smooth Interactive Grid */
+        .key-features {
+            padding: 6rem 0;
+            background-color: #f1f5f9;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .feature-badge {
+            background: rgba(0, 80, 158, 0.06);
+            color: #00509e;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 1.2rem;
+            border: 1px solid rgba(0, 80, 158, 0.02);
+        }
+        .feature-card {
+            background: #ffffff;
+            border-top: 4px solid #00509e;
+            border-radius: 16px;
+            text-align: left;
+            padding: 2.5rem 2.2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            border-left: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-top-color: #ffd700;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        }
+        .feature-card h3 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f172a;
+            letter-spacing: -0.3px;
+        }
+        .feature-card p {
+            font-size: 1rem;
+            color: #475569;
+            line-height: 1.65;
+        }
+        .feature-card .icon-box {
+            width: 54px;
+            height: 54px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.75rem;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover .icon-box {
+            background: #00509e;
+            border-color: #00509e;
+        }
+        .feature-card .icon-box i {
+            font-size: 1.6rem;
+            color: #00509e;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover .icon-box i {
+            color: #ffffff;
+        }
+
+        /* Clean Responsive Scalings */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 2.6rem; }
+            .hero p { font-size: 1.1rem; }
+            .process-step { margin-top: 3rem; }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.1rem; }
+            .hero { padding: 5rem 0 6rem; }
+            .section-title { font-size: 1.8rem; }
+            .grid-3 { grid-template-columns: 1fr; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- header-->
+    <div class="status-ticker">
+        <div class="container ticker-content">
+            <div class="ticker-item"><i class="fa-solid fa-circle-check"></i> Official Civil Resolution Window Active</div>
+            <div class="ticker-item"><i class="fa-solid fa-bolt"></i> Average Resolution Time: 5-7 Working Days</div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><i class="fa-solid fa-scale-balanced"></i> E-Governance PORTAL</a>
+            </div>
+            <button class="nav-toggle"><i class="fa-solid fa-bars"></i></button>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="track-complaint.html">Track Status</a></li>
+                <li class="nav-auth">                   
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                    <a href="register.html" class="btn btn-accent">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Middle Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>Smart Governance, Instant Resolution</h1>
+            <p>Submit, track, and manage grievances anytime, anywhere.Connect directly with the concerned authorities for timely resolution.A smarter way to ensure transparent and accountable governance.</p>
+            <div class="hero-btns">
+                <a href="login.html" class="btn btn-accent btn-lg"><i class="fa-solid fa-file-pen"></i> Raise a Complaint</a>
+                <a href="track-complaint.html" class="btn btn-outline btn-lg"><i class="fa-solid fa-magnifying-glass"></i> Track Live Status</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NEW: How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Create Account</h3>
+                    <p>Register and log in to the portal for secure complaint management</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Raise a Complaint</h3>
+                    <p>Describe your issue and submit it for review by the relevant authorities.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Track Resolution</h3>
+                    <p>View status updates and receive resolution notifications in real time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  Key Features Section -->
+    <section class="key-features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="grid-3">
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fa-solid fa-fingerprint"></i></div>
+                    <span class="feature-badge">Identity Security</span>
+                    <h3>Login & Security System</h3>
+                    <p>This system ensures safe access to the platform by protecting user data through secure login and authentication. Only verified users can use the system, keeping information private and secure.</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fa-solid fa-hashtag"></i></div>
+                    <span class="feature-badge">Tracking Infrastructure</span>
+                    <h3>Complaint Tracking System</h3>
+                    <p>Users can easily track their complaints using a unique ID. It provides regular updates so citizens always know the status and progress of their issues.</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fa-solid fa-chart-pie"></i></div>
+                    <span class="feature-badge">Data Analysis</span>
+                    <h3>Reports & Insights System</h3>
+                    <p>The system analyzes complaint data and generates useful reports. These insights help authorities understand problems and improve services effectively.</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fa-solid fa-filter"></i></div>
+                    <span class="feature-badge">Workspace Optimization</span>
+                    <h3>Work Management System</h3>
+                    <p>This feature helps officials manage and assign complaints in an organized way. It improves efficiency and speeds up the resolution process.</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fa-solid fa-sliders"></i></div>
+                    <span class="feature-badge">Control Hub</span>
+                    <h3>Admin Control Panel</h3>
+                    <p>A central dashboard where all users, complaints, and departments are managed. It allows smooth monitoring and control of the entire system.</p>
+                </div>
+                <div class="card feature-card">
+                    <div class="icon-box"><i class="fa-solid fa-display"></i></div>
+                    <span class="feature-badge">Interface Layout</span>
+                    <h3>Easy Interface System</h3>
+                    <p>The platform has a simple and user-friendly design. It makes it easy for citizens to submit and track complaints from any device.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2026 Public Complaint Resolution Portal | All Rights Reserved.</p>
+            <ul class="footer-links">
+                <li><a href="#">Privacy Framework</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="admin-dashboard.html">Admin Gateway</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>
