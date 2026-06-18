@@ -538,104 +538,211 @@ function complaintHistoryController() {
 
 // 7. Administrative Operational Space (Database Syncing & Status Modifiers)
 function adminDashboardController() {
+
     const session = getActiveUser();
-    if (!session || session.role !== "admin") { window.location.href = "login.html"; return; }
+
+    if (!session || session.role !== "admin") {
+        window.location.href = "login.html";
+        return;
+    }
 
     async function syncMetrics() {
-        // --- REAL DATABASE OPERATION ---
-        if (!isUsingPlaceholderAPI()) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/admin/dashboard-summary`, {
-                    method: "GET",
-                    headers: getHeaders()
-                });
-                if (response.ok) {
-                    const data = await response.json(); // Expected: { totalComplaints, pendingComplaints, resolvedComplaints, totalUsers, complaintsList }
-                    document.getElementById("admTotal").textContent = data.totalComplaints;
-                    document.getElementById("admPending").textContent = data.pendingComplaints;
-                    document.getElementById("admResolved").textContent = data.resolvedComplaints;
-                    document.getElementById("admUsersCount").textContent = data.totalUsers;
-                    renderAdminRecords(data.complaintsList);
-                }
-            } catch (err) {
-                console.error("Admin real-time dashboard data sync failure.", err);
-            }
-            return;
+
+        try {
+
+            // Dashboard Summary
+            const summaryResponse =
+                await fetch(
+                    `${API_BASE_URL}/admin/dashboard-summary`
+                );
+
+            const summaryData =
+                await summaryResponse.json();
+
+            document.getElementById("admTotal").textContent =
+                summaryData.totalComplaints;
+
+            document.getElementById("admPending").textContent =
+                summaryData.pendingComplaints;
+
+            document.getElementById("admResolved").textContent =
+                summaryData.resolvedComplaints;
+
+            document.getElementById("admUsersCount").textContent =
+                summaryData.totalUsers;
+
+            // Complaint List
+            const complaintsResponse =
+                await fetch(
+                    `${API_BASE_URL}/admin/complaints`
+                );
+
+            const complaints =
+                await complaintsResponse.json();
+
+            renderAdminRecords(complaints);
+
         }
+        catch (err) {
 
-        // --- MOCK TESTING FALLBACK ---
-        const complaints = JSON.parse(localStorage.getItem("ccgs_complaints")) || [];
-        const users = JSON.parse(localStorage.getItem("ccgs_users")) || [];
+            console.error(
+                "Dashboard Loading Error:",
+                err
+            );
 
-        document.getElementById("admTotal").textContent = complaints.length;
-        document.getElementById("admPending").textContent = complaints.filter(c => c.status === "Pending").length;
-        document.getElementById("admResolved").textContent = complaints.filter(c => c.status === "Resolved").length;
-        document.getElementById("admUsersCount").textContent = users.length;
-        
-        renderAdminRecords(complaints);
+        }
     }
 
     function renderAdminRecords(complaintsList) {
-        const tbody = document.getElementById("adminTableBody");
+
+        const tbody =
+            document.getElementById("adminTableBody");
+
         if (!tbody) return;
 
         if (complaintsList.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No complaints registered in system.</td></tr>`;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No Complaints Found
+                    </td>
+                </tr>
+            `;
+
             return;
         }
 
-        tbody.innerHTML = complaintsList.map((c) => `
+        tbody.innerHTML = complaintsList.map(c => `
+
             <tr>
-                <td style="color: #00509e; font-weight:600;"><strong>${c.id}</strong></td>
-                <td>${c.user}</td>
-                <td>${c.category}</td>
-                <td>${c.subject}</td>
+
                 <td>
-                    <select class="action-select" data-id="${c.id}" style="padding: 5px; border-radius:4px; font-weight:600; cursor:pointer;">
-                        <option value="Pending" ${c.status === "Pending" ? "selected" : ""}>Pending</option>
-                        <option value="Resolved" ${c.status === "Resolved" ? "selected" : ""}>Resolved</option>
-                    </select>
+                    <strong>${c.complaint_id}</strong>
                 </td>
+
+                <td>
+                    ${c.email}
+                </td>
+
+                <td>
+                    ${c.category}
+                </td>
+
+                <td>
+                    ${c.subject}
+                </td>
+
+                <td>
+
+                    <select
+                        class="status-select"
+                        data-id="${c.id}">
+
+                        <option value="Pending"
+                            ${c.status === "Pending" ? "selected" : ""}>
+                            Pending
+                        </option>
+
+                        <option value="In Progress"
+                            ${c.status === "In Progress" ? "selected" : ""}>
+                            In Progress
+                        </option>
+
+                        <option value="Resolved"
+                            ${c.status === "Resolved" ? "selected" : ""}>
+                            Resolved
+                        </option>
+
+                        <option value="Rejected"
+                            ${c.status === "Rejected" ? "selected" : ""}>
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </td>
+
             </tr>
-        `).join('');
 
-        // Dropdown Event Listeners to alter and update state database records instantly
-        document.querySelectorAll(".action-select").forEach(select => {
-            select.addEventListener("change", async (e) => {
-                const targetId = e.target.getAttribute("data-id");
-                const nextStatus = e.target.value;
+        `).join("");
 
-                // --- REAL DATABASE OPERATION ---
-                if (!isUsingPlaceholderAPI()) {
-                    try {
-                        const response = await fetch(`${API_BASE_URL}/admin/complaints/${targetId}`, {
-                            method: "PATCH",
-                            headers: getHeaders(),
-                            body: JSON.stringify({ status: nextStatus })
-                        });
-                        if (response.ok) syncMetrics();
-                    } catch (err) {
-                        console.error("Failed to post status patch to DB architecture.", err);
+        attachStatusEvents();
+    }
+
+    function attachStatusEvents() {
+
+        document
+            .querySelectorAll(".status-select")
+            .forEach(select => {
+
+                select.addEventListener(
+                    "change",
+                    async function () {
+
+                        const complaintId =
+                            this.dataset.id;
+
+                        const newStatus =
+                            this.value;
+
+                        try {
+
+                            const response =
+                                await fetch(
+                                    `${API_BASE_URL}/admin/complaints/${complaintId}`,
+                                    {
+                                        method: "PUT",
+                                        headers: {
+                                            "Content-Type":
+                                                "application/json"
+                                        },
+                                        body: JSON.stringify({
+                                            status: newStatus
+                                        })
+                                    }
+                                );
+
+                            const data =
+                                await response.json();
+
+                            if (response.ok) {
+
+                                alert(
+                                    "Status Updated Successfully"
+                                );
+
+                                syncMetrics();
+
+                            } else {
+
+                                alert(
+                                    data.message ||
+                                    "Update Failed"
+                                );
+
+                            }
+
+                        }
+                        catch (err) {
+
+                            console.error(err);
+
+                            alert(
+                                "Server Connection Error"
+                            );
+
+                        }
+
                     }
-                    return;
-                }
+                );
 
-                // --- MOCK TESTING FALLBACK ---
-                let localDB = JSON.parse(localStorage.getItem("ccgs_complaints")) || [];
-                const targetIndex = localDB.findIndex(c => c.id === targetId);
-                if (targetIndex !== -1) {
-                    localDB[targetIndex].status = nextStatus;
-                    localStorage.setItem("ccgs_complaints", JSON.stringify(localDB));
-                    alert(`Grievance status modified to ${nextStatus} for row reference ${targetId}.`);
-                    syncMetrics();
-                }
             });
-        });
+
     }
 
     syncMetrics();
 }
-
 // 8. Contact Form Submissions Handling
 function contactFormController() {
     const form = document.getElementById("contactForm");

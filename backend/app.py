@@ -4,6 +4,7 @@ from flask_cors import CORS
 from database import get_db_connection
 from routes.auth import auth_bp
 from routes.complaints import complaints_bp
+from routes.admin import admin_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +20,10 @@ app.register_blueprint(
     url_prefix="/api/complaints"
 )
 
+app.register_blueprint(
+    admin_bp,
+    url_prefix="/api/admin"
+)
 
 # Home Route
 @app.route("/")
