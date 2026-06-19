@@ -128,3 +128,28 @@ def update_complaint_status(complaint_id):
             "status": "error",
             "message": str(e)
         }), 500
+    
+@admin_bp.route("/users", methods=["GET"])
+def get_users():
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+            id,
+            name,
+            email,
+            mobile,
+            address
+        FROM users
+        WHERE role='user'
+        ORDER BY id DESC
+    """)
+
+    users = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(users)

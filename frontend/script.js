@@ -956,14 +956,42 @@ function complaintManagementController() {
         return;
     }
 
-    const tableBody = document.getElementById("adminComplaintTable");
-    const searchBox = document.getElementById("complaintSearch");
-    const statusFilter = document.getElementById("statusFilter");
+    const tableBody =
+        document.getElementById("adminComplaintTable");
 
-    let complaints =
-        JSON.parse(localStorage.getItem("ccgs_complaints")) || [];
+    const searchBox =
+        document.getElementById("complaintSearch");
 
-    renderComplaints(complaints);
+    const statusFilter =
+        document.getElementById("statusFilter");
+
+    let complaints = [];
+
+    loadComplaints();
+
+    async function loadComplaints() {
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE_URL}/admin/complaints`
+                );
+
+            complaints =
+                await response.json();
+
+            renderComplaints(complaints);
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert(
+                "Failed to load complaints"
+            );
+        }
+    }
 
     function renderComplaints(data) {
 
@@ -973,21 +1001,23 @@ function complaintManagementController() {
 
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="6" style="text-align:center;">
+                    <td colspan="6">
                         No Complaints Found
                     </td>
                 </tr>
             `;
+
             return;
         }
 
-        tableBody.innerHTML = data.map(c => `
+        tableBody.innerHTML =
+            data.map(c => `
 
             <tr>
 
-                <td>${c.id}</td>
+                <td>${c.complaint_id}</td>
 
-                <td>${c.user}</td>
+                <td>${c.email}</td>
 
                 <td>${c.category}</td>
 
@@ -996,7 +1026,7 @@ function complaintManagementController() {
                 <td>
 
                     <select
-                        class="action-select complaintStatus"
+                        class="complaintStatus"
                         data-id="${c.id}">
 
                         <option value="Pending"
@@ -1043,53 +1073,80 @@ function complaintManagementController() {
     function attachEvents() {
 
         document
-            .querySelectorAll(".complaintStatus")
-            .forEach(select => {
+        .querySelectorAll(".complaintStatus")
+        .forEach(select => {
 
-                select.addEventListener("change", function () {
+            select.addEventListener(
+                "change",
+                async function() {
 
-                    const complaintId = this.dataset.id;
-                    const newStatus = this.value;
+                    const complaintId =
+                        this.dataset.id;
 
-                    let db =
-                        JSON.parse(localStorage.getItem("ccgs_complaints")) || [];
+                    const newStatus =
+                        this.value;
 
-                    const target =
-                        db.find(c => c.id === complaintId);
+                    try {
 
-                    if (target) {
+                        const response =
+                            await fetch(
+                                `${API_BASE_URL}/admin/complaints/${complaintId}`,
+                                {
+                                    method: "PUT",
+                                    headers: {
+                                        "Content-Type":
+                                        "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        status: newStatus
+                                    })
+                                }
+                            );
 
-                        target.status = newStatus;
+                        const data =
+                            await response.json();
 
-                        localStorage.setItem(
-                            "ccgs_complaints",
-                            JSON.stringify(db)
+                        alert(data.message);
+
+                    } catch (err) {
+
+                        console.error(err);
+
+                        alert(
+                            "Failed to update status"
                         );
-
-                        alert("Status Updated Successfully");
                     }
 
-                });
+                }
+            );
 
-            });
+        });
 
         document
-            .querySelectorAll(".viewComplaint")
-            .forEach(btn => {
+        .querySelectorAll(".viewComplaint")
+        .forEach(btn => {
 
-                btn.addEventListener("click", function () {
+            btn.addEventListener(
+                "click",
+                function() {
 
-                    const complaintId = this.dataset.id;
+                    const complaintId =
+                        this.dataset.id;
 
                     const complaint =
-                        complaints.find(c => c.id === complaintId);
+                        complaints.find(
+                            c => c.id == complaintId
+                        );
 
                     if (!complaint) return;
 
                     alert(
-`Complaint ID: ${complaint.id}
 
-Citizen Email: ${complaint.user}
+`Complaint ID: ${complaint.complaint_id}
+
+Citizen: ${complaint.name}
+
+Email: ${complaint.email}
 
 Department: ${complaint.category}
 
@@ -1099,14 +1156,16 @@ Description: ${complaint.description}
 
 Location: ${complaint.location}
 
-Date: ${complaint.date}
+Status: ${complaint.status}
 
-Status: ${complaint.status}`
+Date: ${complaint.created_at}`
+
                     );
 
-                });
+                }
+            );
 
-            });
+        });
 
     }
 
@@ -1115,40 +1174,52 @@ Status: ${complaint.status}`
         let filtered = complaints;
 
         const search =
-            searchBox ? searchBox.value.toLowerCase() : "";
+            searchBox.value.toLowerCase();
 
         const status =
-            statusFilter ? statusFilter.value : "All";
+            statusFilter.value;
 
         if (search) {
 
-            filtered = filtered.filter(c =>
-                c.id.toLowerCase().includes(search) ||
-                c.subject.toLowerCase().includes(search)
-            );
+            filtered =
+                filtered.filter(c =>
 
+                    c.complaint_id
+                    .toLowerCase()
+                    .includes(search)
+
+                    ||
+
+                    c.subject
+                    .toLowerCase()
+                    .includes(search)
+                );
         }
 
         if (status !== "All") {
 
-            filtered = filtered.filter(c =>
-                c.status === status
-            );
-
+            filtered =
+                filtered.filter(
+                    c => c.status === status
+                );
         }
 
         renderComplaints(filtered);
-
     }
 
     if (searchBox) {
-        searchBox.addEventListener("input", applyFilters);
+        searchBox.addEventListener(
+            "input",
+            applyFilters
+        );
     }
 
     if (statusFilter) {
-        statusFilter.addEventListener("change", applyFilters);
+        statusFilter.addEventListener(
+            "change",
+            applyFilters
+        );
     }
-
 }
 // SETTINGS PAGE
 
