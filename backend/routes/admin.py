@@ -219,3 +219,46 @@ def analytics():
     "totalUsers": total_users,
     "departmentStats": department_stats
 })
+
+@admin_bp.route(
+    "/complaints/<int:complaint_id>",
+    methods=["GET"]
+)
+def get_complaint_details(complaint_id):
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        """
+        SELECT
+            complaints.id,
+            complaints.complaint_id,
+            complaints.category,
+            complaints.subject,
+            complaints.description,
+            complaints.location,
+            complaints.status,
+            complaints.created_at,
+            users.name,
+            users.email
+        FROM complaints
+        JOIN users
+        ON complaints.user_id = users.id
+        WHERE complaints.id = %s
+        """,
+        (complaint_id,)
+    )
+
+    complaint = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if complaint:
+
+        return jsonify(complaint)
+
+    return jsonify({
+        "message": "Complaint Not Found"
+    }), 404

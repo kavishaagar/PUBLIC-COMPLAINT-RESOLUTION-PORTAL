@@ -1133,11 +1133,10 @@ function complaintManagementController() {
 
                 <td>
 
-                    <button
-                        class="btn btn-primary viewComplaint"
-                        data-id="${c.id}">
-                        View
-                    </button>
+                    <a href="complaint-details.html?id=${c.id}"
+                        class="btn btn-primary">
+
+                            View </a>
 
                 </td>
 
@@ -1446,5 +1445,101 @@ function forgotPasswordController() {
         window.location.href = "login.html";
 
     });
+
+}
+
+//COMPLAINT-DETAILS//
+
+function complaintDetailsController() {
+
+    const session = getActiveUser();
+
+    if (!session || session.role !== "admin") {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const complaintId =
+        params.get("id");
+
+    if (!complaintId) return;
+
+    loadComplaint();
+
+    async function loadComplaint() {
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE_URL}/admin/complaints/${complaintId}`,
+                {
+                    method: "GET",
+                    headers: getHeaders()
+                }
+            );
+
+            const complaint =
+                await response.json();
+
+            document.getElementById(
+                "detailComplaintId"
+            ).textContent =
+                complaint.complaint_id;
+
+            document.getElementById(
+                "detailName"
+            ).textContent =
+                complaint.name;
+
+            document.getElementById(
+                "detailEmail"
+            ).textContent =
+                complaint.email;
+
+            document.getElementById(
+                "detailCategory"
+            ).textContent =
+                complaint.category;
+
+            document.getElementById(
+                "detailSubject"
+            ).textContent =
+                complaint.subject;
+
+            document.getElementById(
+                "detailDescription"
+            ).textContent =
+                complaint.description;
+
+            document.getElementById(
+                "detailLocation"
+            ).textContent =
+                complaint.location;
+
+            document.getElementById(
+                "detailStatus"
+            ).textContent =
+                complaint.status;
+
+            document.getElementById(
+                "detailDate"
+            ).textContent =
+                complaint.created_at;
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Failed to Load Complaint",
+                error
+            );
+
+        }
+
+    }
 
 }
