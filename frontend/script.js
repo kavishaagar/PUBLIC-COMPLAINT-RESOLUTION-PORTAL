@@ -765,74 +765,80 @@ function logout() {
 //ANALYTICS
 function analyticsController() {
 
-    const complaints =
-        JSON.parse(localStorage.getItem("ccgs_complaints")) || [];
+    const session = getActiveUser();
 
-    const users =
-        JSON.parse(localStorage.getItem("ccgs_users")) || [];
+    if (!session || session.role !== "admin") {
+        window.location.href = "login.html";
+        return;
+    }
 
-    document.getElementById("anaTotal").textContent =
-        complaints.length;
+    loadAnalytics();
 
-    document.getElementById("anaPending").textContent =
-        complaints.filter(c => c.status === "Pending").length;
+    async function loadAnalytics() {
 
-    document.getElementById("anaResolved").textContent =
-        complaints.filter(c => c.status === "Resolved").length;
+        try {
 
-    document.getElementById("anaUsers").textContent =
-        users.length;
+            const response = await fetch(
+                `${API_BASE_URL}/admin/analytics`,
+                {
+                    method: "GET",
+                    headers: getHeaders()
+                }
+            );
 
-    const resolved =
-        complaints.filter(c => c.status === "Resolved").length;
+            const data = await response.json();
 
-    const rate =
-        complaints.length
-            ? Math.round((resolved / complaints.length) * 100)
-            : 0;
+            document.getElementById("anaTotal").textContent =
+                data.total || 0;
 
-    document.getElementById("resolutionRate").textContent =
-        rate + "%";
+            document.getElementById("anaPending").textContent =
+                data.pending || 0;
 
-    // Department Wise Table
+            document.getElementById("anaResolved").textContent =
+                data.resolved || 0;
 
-    const deptBody =
-        document.getElementById("departmentTableBody");
+            document.getElementById("anaUsers").textContent =
+                data.totalUsers || 0;
 
-    const departments = {};
+            // Resolution Rate
 
-    complaints.forEach(c => {
+            const rate =
+                data.total > 0
+                    ? Math.round(
+                        (data.resolved / data.total) * 100
+                    )
+                    : 0;
 
-        departments[c.category] =
-            (departments[c.category] || 0) + 1;
+            document.getElementById(
+                "resolutionRate"
+            ).textContent = rate + "%";
 
-    });
+            // Department Table
 
-    deptBody.innerHTML = Object.entries(departments)
-        .map(([dept,count]) => `
-        <tr>
-            <td>${dept}</td>
-            <td>${count}</td>
-        </tr>
-    `).join("");
+            const deptBody =
+                document.getElementById(
+                    "departmentTableBody"
+                );
 
-    // Recent Complaints
+            deptBody.innerHTML =
+                data.departmentStats.map(dept => `
+                    <tr>
+                        <td>${dept.category}</td>
+                        <td>${dept.count}</td>
+                    </tr>
+                `).join("");
 
-    const recentBody =
-        document.getElementById("recentComplaintsBody");
+        } catch (error) {
 
-    recentBody.innerHTML = complaints
-        .slice()
-        .reverse()
-        .slice(0,5)
-        .map(c => `
-        <tr>
-            <td>${c.id}</td>
-            <td>${c.user}</td>
-            <td>${c.category}</td>
-            <td>${c.status}</td>
-        </tr>
-    `).join("");
+            console.error(
+                "Analytics Loading Failed",
+                error
+            );
+
+        }
+
+    }
+
 }
 
 //USER MANAGEMENT

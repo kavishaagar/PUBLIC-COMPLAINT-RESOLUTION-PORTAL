@@ -153,3 +153,69 @@ def get_users():
     conn.close()
 
     return jsonify(users)
+
+@admin_bp.route("/analytics", methods=["GET"])
+def analytics():
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute(
+        "SELECT COUNT(*) total FROM complaints"
+    )
+    total = cursor.fetchone()["total"]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*) total
+        FROM complaints
+        WHERE status='Pending'
+        """
+    )
+    pending = cursor.fetchone()["total"]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*) total
+        FROM complaints
+        WHERE status='Resolved'
+        """
+    )
+    resolved = cursor.fetchone()["total"]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*) total
+        FROM complaints
+        WHERE status='Rejected'
+        """
+    )
+    rejected = cursor.fetchone()["total"]
+    cursor.execute("""
+    SELECT COUNT(*) total
+    FROM users
+    WHERE role='user'
+""")
+
+    total_users = cursor.fetchone()["total"]
+
+    cursor.execute("""
+        SELECT category,
+        COUNT(*) count
+        FROM complaints
+        GROUP BY category
+    """)
+
+    department_stats = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+    "total": total,
+    "pending": pending,
+    "resolved": resolved,
+    "rejected": rejected,
+    "totalUsers": total_users,
+    "departmentStats": department_stats
+})
