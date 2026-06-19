@@ -850,11 +850,6 @@ function userManagementController() {
     const tableBody =
         document.getElementById("userTableBody");
 
-    if (!tableBody) return;
-
-    const users =
-        JSON.parse(localStorage.getItem("ccgs_users")) || [];
-
     const totalUsers =
         document.getElementById("totalUsers");
 
@@ -864,67 +859,118 @@ function userManagementController() {
     const pendingUsers =
         document.getElementById("pendingUsers");
 
-    if (totalUsers) totalUsers.textContent = users.length;
-    if (verifiedUsers) verifiedUsers.textContent = users.length;
-    if (pendingUsers) pendingUsers.textContent = 0;
+    const searchBox =
+        document.getElementById("userSearch");
 
-    if (users.length === 0) {
+    let users = [];
 
-        tableBody.innerHTML = `
-        <tr>
-            <td colspan="6" style="text-align:center;">
-                No Users Registered
-            </td>
-        </tr>
-        `;
+    async function loadUsers() {
 
-        return;
+        try {
+
+            const response = await fetch(
+                `${API_BASE_URL}/admin/users`
+            );
+
+            users = await response.json();
+
+            if (totalUsers)
+                totalUsers.textContent = users.length;
+
+            if (verifiedUsers)
+                verifiedUsers.textContent = users.length;
+
+            if (pendingUsers)
+                pendingUsers.textContent = 0;
+
+            renderUsers(users);
+
+        } catch (err) {
+
+            console.error(err);
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        Failed To Load Users
+                    </td>
+                </tr>
+            `;
+        }
     }
 
-    tableBody.innerHTML = users.map((user, index) => `
+    function renderUsers(data) {
 
-        <tr>
+        if (!tableBody) return;
 
-            <td>USR${1000 + index}</td>
+        if (data.length === 0) {
 
-            <td>${user.name}</td>
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6"
+                    style="text-align:center;">
+                        No Users Found
+                    </td>
+                </tr>
+            `;
 
-            <td>${user.email}</td>
+            return;
+        }
 
-            <td>${user.mobile || "-"}</td>
+        tableBody.innerHTML = data.map(user => `
 
-            <td>
-                <span class="status-badge resolved">
-                    Active
-                </span>
-            </td>
+            <tr>
 
-            <td>
-                <button
-                    class="btn btn-primary viewUser"
-                    data-email="${user.email}">
-                    View
-                </button>
-            </td>
+                <td>${user.id}</td>
 
-        </tr>
+                <td>${user.name}</td>
 
-    `).join("");
+                <td>${user.email}</td>
 
-    document.querySelectorAll(".viewUser")
-    .forEach(btn => {
+                <td>${user.mobile || "-"}</td>
 
-        btn.addEventListener("click", function() {
+                <td>
+                    <span class="status-badge resolved">
+                        Active
+                    </span>
+                </td>
 
-            const email =
-                this.dataset.email;
+                <td>
 
-            const selectedUser =
-                users.find(u => u.email === email);
+                    <button
+                        class="btn btn-primary viewUser"
+                        data-id="${user.id}">
+                        View
+                    </button>
 
-            if (!selectedUser) return;
+                </td>
 
-            alert(
+            </tr>
+
+        `).join("");
+
+        attachEvents();
+    }
+
+    function attachEvents() {
+
+        document
+        .querySelectorAll(".viewUser")
+        .forEach(btn => {
+
+            btn.addEventListener("click", function() {
+
+                const userId =
+                    this.dataset.id;
+
+                const selectedUser =
+                    users.find(
+                        u => u.id == userId
+                    );
+
+                if (!selectedUser) return;
+
+                alert(
 `Name: ${selectedUser.name}
 
 Email: ${selectedUser.email}
@@ -933,12 +979,38 @@ Mobile: ${selectedUser.mobile || "-"}
 
 Address: ${selectedUser.address || "-"}
 
-Status: Active`
-            );
+Role: ${selectedUser.role}`
+                );
+
+            });
 
         });
 
-    });
+    }
+
+    if (searchBox) {
+
+        searchBox.addEventListener("input", function() {
+
+            const value =
+                this.value.toLowerCase();
+
+            const filtered =
+                users.filter(user =>
+
+                    user.name.toLowerCase().includes(value)
+                    ||
+                    user.email.toLowerCase().includes(value)
+
+                );
+
+            renderUsers(filtered);
+
+        });
+
+    }
+
+    loadUsers();
 
 }
 
